@@ -19,6 +19,7 @@ What is nice to know on code side:
       - there is still a lot of functionality stuff happening in the messaging component (mouseevents, dragging of the windows...) - i did not manage to put it in a context, yet, but I think that would make very much sense. )
 
 What would be a nice feature:
+
     - I think it would be nice, if a user creates a chatroom and is the first one in this chatroom, the user gets suggestions for similarly named chatrooms, that are already populated by at least one other user. 
     - I think it would be nice to open chats with speficic users, that you get to know in a chat. My idea was, that a user could click on another user, is then asked, whether he or she would want to create a new chat with this person. If yes, an input appears, where the name of the new chatroom can be defined. --> The new chatroom can either be created as a subthread of the current chat or a completely new chat. Either way it will appear in the flowing chatrooms on top of the page. If it's a subthread-chatroom, there has to be some kind of visual remark, showing that. (Maybe give the opportunity to make private chats, either?) 
     - I also think it could be a nice feature, to pass around links of chatrooms that enable entering that room on click. 
