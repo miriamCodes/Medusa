@@ -1,19 +1,31 @@
+import './Messaging.css';
 import { useContext, useEffect, useState, useRef } from "react";
-import { MessageContext } from "../context/MessageContext";
-import { ChatContext } from "../context/ChatContext";
+import { MessageContext } from "../context/MessageContext/MessageContext";
+import { ChatContext } from "../context/ChatContext/ChatContext";
+import { MouseEvent } from "react";
+import React from 'react';
 
-function Chat({room, socket}) {
+type Position = {
+  top: string;
+  left: string;
+}
+
+function Chat({room, socket}: {room:string; socket: any}): JSX.Element {
 
   const {setMessage, messageList, sendMessage, message} = useContext(MessageContext);
   const {leaveRoom, handleBackgroundColor} = useContext(ChatContext);
 
   // MESSAGE FUNCTIONALITY 
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = (e: React.MouseEvent<HTMLButtonElement>) => {
     sendMessage(room);
-    const parentNode = e.target.parentNode;
-    const input = parentNode.querySelector('input');
-    input.value = '';
+    const targetNode = e.target as Node;
+    if (targetNode.parentNode) {
+      const input = (targetNode.parentNode as HTMLElement).querySelector('input');
+      if (input) {
+        input.value = '';
+      }
+    }
   };
   
   const handleLeaveRoom = () => {
@@ -80,7 +92,7 @@ function Chat({room, socket}) {
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
-  function handleMouseDown(event) {
+  function handleMouseDown(event: MouseEvent) {
     setIsDragging(true);
     setDragOffset({
       x: event.clientX - parseInt(position.left),
@@ -88,7 +100,7 @@ function Chat({room, socket}) {
     });
   }
 
-  function handleMouseMove(event) {
+  function handleMouseMove(event: MouseEvent) {
     if (isDragging) {
       setPosition({
         left: event.clientX - dragOffset.x + "px",
@@ -113,16 +125,28 @@ function Chat({room, socket}) {
 
   return (
     <>
-      <div className="MessageContainer" style={{ position: "absolute", ...position }} onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}>
-
-          <div className="ChatBar">
-            <div className="Room">{room}</div>
-            <button class="LeaveButton" onClick={handleLeaveRoom}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
-              </svg>
+      <div className="MessageContainer" 
+      style={{ position: "absolute", ...position }} 
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}>
+        <div className="ChatBar">
+          <div className="Room">{room}</div>
+            <button 
+            className="LeaveButton" 
+            onClick={handleLeaveRoom}>
+            <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="16" 
+            height="16" 
+            fill="currentColor" 
+            className="bi bi-x-lg" 
+            viewBox="0 0 16 16"
+            >
+            <path 
+            d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
+            />
+            </svg>
             </button>
           </div>
 
@@ -131,30 +155,37 @@ function Chat({room, socket}) {
             {messageList
               .filter((messageContent) => messageContent.room === room)
               .map((messageContent) => (
-                <div className={`Message ${messageContent.sender}`}>
-
-                  <div className="User_Time" style={{ color: getColor(messageContent.socketId) }}>
-                    {messageContent.sender === "me" ? "You" : `User ${messageContent.socketId.substring(0, 5)}`}, {messageContent.time}
-                  </div>
-
-                  <div className="MessageContent">{messageContent.message}
-                  </div>
-                  <div ref={messagesEndRef}></div>
-
+              <div className={`Message ${messageContent.sender}`}>
+                <div 
+                className="User_Time" 
+                style={{ color: getColor(messageContent.socketId) }}>   
+                {messageContent.sender === "me" ? "You" : `User ${messageContent.socketId.substring(0, 5)}`}, 
+                {messageContent.time}
                 </div>
-            ))}
+                <div className="MessageContent">
+                  {messageContent.message}
+                </div>
+                <div ref={messagesEndRef}>
+                </div>
+              </div>
+              ))}
             </div>
 
-                <div className="ChatInputWrapper">
-                  <div className="ChatInput">
-                    <input className="MessageInput" type="text"
-                      onChange={(event) => {
-                        setMessage(event.target.value);
-                      }}>
-                    </input>
-                    <button class="SendButton" onClick={handleSendMessage}>Send</button>
-                  </div>
-                </div>
+            <div className="ChatInputWrapper">
+              <div className="ChatInput">
+                <input className="MessageInput" 
+                  type="text"
+                  onChange={(event) => {
+                    setMessage(event.target.value);
+                  }}>
+                </input>
+                <button 
+                className="SendButton" 
+                onClick={handleSendMessage}
+                >Send
+                </button>
+              </div>
+            </div>
                
           
           </div>

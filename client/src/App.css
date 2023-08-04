@@ -1,0 +1,40 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+}
+
+.page-border {
+  position: fixed;
+  inset: 0;
+  padding: 16px;
+  border: 16px solid rgb(217, 207, 196);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.marquee-container {
+  overflow: hidden;
+} 
+
+.room-list-container {
+  width: 100vw;
+  z-index: 10;
+}
+/* CAN BE DELETED IN CASE EVERYTHING STILL RENDERS AS EXPECTED */
+
+/* ??? maybe only for mocking?
+.Message.me {
+  width: 80%;
+  background-color: rgba(255, 255, 255, 0.05);
+  align-self: flex-end;
+}
+
+??? maybe only for mocking?
+.Message.other {
+  width: 80%;
+  background-color: rgba(255, 255, 255, 0.05);
+  align-self: flex-start;
+} */

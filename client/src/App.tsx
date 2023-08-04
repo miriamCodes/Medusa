@@ -1,13 +1,13 @@
-import "./index.css";
+import './App.css';
 import RoomList from "./components/RoomList";
 import RoomSelector from "./components/RoomSelector";
 import ChatList from "./components/ChatList";
 import Marquee from "react-fast-marquee"
 import { useContext } from "react";
-import { ChatContext } from "./context/ChatContext";
+import { ChatContext } from "./context/ChatContext/ChatContext";
+import React from 'react';
 
-function App() {
-
+function App(): JSX.Element {
   const {bgColor}= useContext(ChatContext)
 
   return (
@@ -26,14 +26,10 @@ function App() {
         <RoomSelector></RoomSelector>
       </div>
       <ChatList></ChatList>
-      {/* <div className="page-border"></div> */}
     </>
 
 
   );
-
 }
 
 export default App;
-
-// background: 'rgb(182,182,182)',
