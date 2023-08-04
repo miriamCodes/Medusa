@@ -113,7 +113,7 @@ function Chat({room, socket}: {room:string; socket: any}): JSX.Element {
   function handleMouseUp() {
     setIsDragging(false);
   }
-  const messagesEndRef = useRef(null)
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({behavior: 'smooth'})
