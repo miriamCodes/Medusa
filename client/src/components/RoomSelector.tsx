@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import { ChatContext } from '../context/ChatContext/ChatContext';
 import ChatList from './ChatList';
 
-function RoomSelector(): JSX.Element {
+function RoomSelector(): React.JSX.Element {
   const {
     setRoom,
     joinRoom,

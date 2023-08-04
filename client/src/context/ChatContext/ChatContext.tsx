@@ -1,32 +1,45 @@
-import io from 'socket.io-client';
-import { createContext, useEffect, useState } from 'react';
-import { ChatContextValues, ChatList, ChatRoom } from './ChatContextTypes';
-import { Position } from '../MessageContext/MessageContextTypes';
+import io from "socket.io-client";
+import React, { createContext, useEffect, useState } from "react";
+
+import { ChatContextValues, ChatList, ChatRoom } from "./ChatContextTypes";
+import { Position } from "../MessageContext/MessageContextTypes";
 
 const ChatContext = createContext<ChatContextValues>({} as ChatContextValues);
-const socket = io('http://localhost:3001');
+const socket = io("http://localhost:3001");
 
-function ChatProvider({ children }: {children: React.ReactNode}): JSX.Element {
+function ChatProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}): React.JSX.Element {
   // DEFINTIONS
 
   // ROOOMS
-  const [room, setRoom] = useState('');
+  const [room, setRoom] = useState("");
   const [chatrooms, setChatrooms] = useState<ChatRoom[]>([]);
   const [userCount, setUserCount] = useState(0);
   const [roomLists, setRoomLists] = useState<ChatList[]>([]);
 
-  const colors = ['rgb(210, 185, 31)', 'rgb(37,73,155)', 'rgb(130,125,188', 'rgb(244,90,51)', 'rgb(217,117,117)'];
+  const colors = [
+    "rgb(210, 185, 31)",
+    "rgb(37,73,155)",
+    "rgb(130,125,188",
+    "rgb(244,90,51)",
+    "rgb(217,117,117)",
+  ];
   const [bgColor, setBgColor] = useState(colors[0]);
 
   function handleBackgroundColor() {
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
     setBgColor(randomColor);
-    console.log('I was executed');
+    console.log("I was executed");
   }
 
   const roomData = {
     name: room,
-    time: `${new Date(Date.now()).getHours()}:${new Date(Date.now()).getMinutes()}`,
+    time: `${new Date(Date.now()).getHours()}:${new Date(
+      Date.now()
+    ).getMinutes()}`,
     creator: socket.id,
   };
 
@@ -41,7 +54,7 @@ function ChatProvider({ children }: {children: React.ReactNode}): JSX.Element {
   // ROUTES
 
   function getAll() {
-    fetch('http://localhost:3001/chatrooms')
+    fetch("http://localhost:3001/chatrooms")
       .then((res) => res.json())
       .then((data) => setChatrooms(data))
       .catch((err) => console.error(err));
@@ -50,19 +63,21 @@ function ChatProvider({ children }: {children: React.ReactNode}): JSX.Element {
   // FUNCTIONS
 
   const joinRoom = () => {
-    if (room !== '') {
-      const userAlreadyInRoom = roomLists.some((list) => list.rooms.some((r) => r.name === room));
+    if (room !== "") {
+      const userAlreadyInRoom = roomLists.some((list) =>
+        list.rooms.some((r) => r.name === room)
+      );
       if (userAlreadyInRoom) {
-        console.log('You are already in this room');
+        console.log("You are already in this room");
         return;
       }
       const existingRoom = chatrooms.some((c) => c.name === room);
       if (existingRoom) {
-        socket.emit('join_room', roomData);
+        socket.emit("join_room", roomData);
 
         setRoomLists((prevRoomLists) => {
           const index = prevRoomLists.findIndex(
-            (list) => list.socketId === socket.id,
+            (list) => list.socketId === socket.id
           );
           const updatedRooms = [
             ...prevRoomLists[index].rooms,
@@ -77,12 +92,12 @@ function ChatProvider({ children }: {children: React.ReactNode}): JSX.Element {
           return updatedRoomLists;
         });
       } else {
-        socket.emit('create_room', room);
-        socket.emit('join_room', roomData);
+        socket.emit("create_room", room);
+        socket.emit("join_room", roomData);
 
         setRoomLists((prevRoomLists) => {
           const index = prevRoomLists.findIndex(
-            (list) => list.socketId === socket.id,
+            (list) => list.socketId === socket.id
           );
           const updatedRooms = [
             ...prevRoomLists[index].rooms,
@@ -101,13 +116,13 @@ function ChatProvider({ children }: {children: React.ReactNode}): JSX.Element {
   };
 
   const leaveRoom = (room: string) => {
-    socket.emit('leave_room', room);
+    socket.emit("leave_room", room);
     setRoomLists((prevRoomLists) => {
       const index = prevRoomLists.findIndex(
-        (list) => list.socketId === socket.id,
+        (list) => list.socketId === socket.id
       );
       const updatedRooms = prevRoomLists[index].rooms.filter(
-        (r) => r.name !== room,
+        (r) => r.name !== room
       );
       const updatedList = {
         socketId: socket.id,
@@ -123,32 +138,32 @@ function ChatProvider({ children }: {children: React.ReactNode}): JSX.Element {
   // ERSTELLUNG DES STORAGE OBJEKTS
 
   useEffect(() => {
-    socket.on('connect', () => {
+    socket.on("connect", () => {
       setRoomLists((prevRoomLists) => [
         ...prevRoomLists,
         { socketId: socket.id, rooms: [] },
       ]);
     });
     return () => {
-      socket.off('connect');
+      socket.off("connect");
     };
   }, []);
 
   // UPDATE CHATRROMS
 
   useEffect(() => {
-    socket.on('update_chatrooms', (chatrooms) => {
+    socket.on("update_chatrooms", (chatrooms) => {
       setChatrooms(chatrooms);
     });
     return () => {
-      socket.off('update_chatrooms');
+      socket.off("update_chatrooms");
     };
   }, []);
 
   // USER JOIN
 
   useEffect(() => {
-    socket.on('user_join', (userData) => {
+    socket.on("user_join", (userData) => {
       const updatedChatrooms = chatrooms.map((chatroom) => {
         if (chatroom.name === userData.room) {
           return {
@@ -160,18 +175,24 @@ function ChatProvider({ children }: {children: React.ReactNode}): JSX.Element {
         return chatroom;
       });
       setChatrooms(updatedChatrooms);
-      console.log(`User ${userData.username} joined the chatroom ${userData.room}. Users: ${userData.userCount}. Usernames: ${userData.usernames.join(', ')}`);
+      console.log(
+        `User ${userData.username} joined the chatroom ${
+          userData.room
+        }. Users: ${userData.userCount}. Usernames: ${userData.usernames.join(
+          ", "
+        )}`
+      );
     });
 
     return () => {
-      socket.off('user_join');
+      socket.off("user_join");
     };
   }, [chatrooms]);
 
   // USER LEAVE
 
   useEffect(() => {
-    socket.on('user_leaves', (userData) => {
+    socket.on("user_leaves", (userData) => {
       const updatedChatrooms = chatrooms.map((chatroom) => {
         if (chatroom.name === userData.room) {
           return {
@@ -183,11 +204,15 @@ function ChatProvider({ children }: {children: React.ReactNode}): JSX.Element {
         return chatroom;
       });
       setChatrooms(updatedChatrooms);
-      console.log(`User ${userData.username} left the chatroom ${userData.room}. Users: ${userData.userCount}. Usernames: ${userData.usernames.join(', ')}`);
+      console.log(
+        `User ${userData.username} left the chatroom ${userData.room}. Users: ${
+          userData.userCount
+        }. Usernames: ${userData.usernames.join(", ")}`
+      );
     });
 
     return () => {
-      socket.off('user_leaves');
+      socket.off("user_leaves");
     };
   }, [chatrooms]);
 
@@ -250,12 +275,10 @@ function ChatProvider({ children }: {children: React.ReactNode}): JSX.Element {
     handleBackgroundColor,
   };
 
-  return (
-    <ChatContext.Provider value={value}>
-      {children}
-    </ChatContext.Provider>
-  );
+  return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
 }
+
+// sharing the functions between the files doesn't work for joinroom ????
 
 export { ChatContext, ChatProvider };
 

@@ -2,7 +2,7 @@
 import { createContext } from 'react';
 import io, { Socket } from 'socket.io-client';
 
-const ChatContext = createContext<ChatContextValues>({} as ChatContextValues);
+
 
 const socket = io('http://localhost:3001');
 
@@ -44,5 +44,5 @@ export interface ChatList {
   socketId: string;
   rooms: ChatRoom[];
 }
-
+const ChatContext = createContext<ChatContextValues>({} as ChatContextValues);
 export { ChatContext, socket };
