@@ -34,30 +34,31 @@ function Chat({room, socket}: {room:string; socket: any}): JSX.Element {
   };
 
   // COLORS 
-
+  const colorMapRef = useRef<Record<string, string>>({});
   const [colorMap, setColorMap] = useState({});
   const [color, setColor] = useState("#" + ((Math.random() * 0xffffff) << 0).toString(16)); // Define the color variable
 
   useEffect(() => {
-    setColorMap((prevColorMap) => {
-      return {
-        ...prevColorMap,
-        [socket.id]: color,
-      };
-    });
+    const newColorMap = {
+      ...colorMap,
+      [socket.id]: color,
+    };
+    colorMapRef.current = newColorMap;
+    setColorMap(newColorMap);
   }, [socket.id, color]);
 
-  function getColor(sender) {
-    if (!colorMap[sender]) {
+  function getColor(sender: string) {
+    if (!colorMapRef.current[sender]) {
       // Generate a random color for new users
-      setColorMap((prevColorMap) => {
-        return {
-          ...prevColorMap,
-          [sender]: getRandomColor(),
-        };
-      });
+      const newColor = getRandomColor();
+      const newColorMap = {
+        ...colorMapRef.current,
+        [sender]: newColor,
+      };
+      colorMapRef.current = newColorMap;
+      setColorMap(newColorMap);
     }
-    return colorMap[sender];
+    return colorMapRef.current[sender];
   }
 
   function getRandomColor() {
