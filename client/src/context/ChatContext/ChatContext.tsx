@@ -1,10 +1,11 @@
 import io from "socket.io-client";
 import { createContext, useEffect, useState } from "react";
+import { ChatContextValues
+ } from "./ChatContextTypes";
+const ChatContext = createContext<ChatContextValues>({} as ChatContextValues);
+const socket = io("http://localhost:3001");
 
-const ChatContext = createContext();
-const socket = io.connect("http://localhost:3001");
-
-function ChatProvider ({ children }) {
+function ChatProvider ({ children }: {children: React.ReactNode}): JSX.Element {
 
 
   // DEFINTIONS

@@ -1,17 +1,26 @@
+import './RoomSelector.css';
 import { useContext, useState } from "react";
-import { ChatContext } from "../context/ChatContext";
+import { ChatContext } from "../context/ChatContext/ChatContext";
 import ChatList from "./ChatList"
+import React from 'react';
 
-function RoomSelector() {
+function RoomSelector(): JSX.Element {
 
-  const {setRoom, joinRoom, setSelectorVisible, setSelectorClosed, isSelectorClosed, isSelectorVisible, handleBackgroundColor} = useContext(ChatContext) 
+  const {
+    setRoom, 
+    joinRoom, 
+    setSelectorVisible, 
+    setSelectorClosed, 
+    isSelectorClosed, 
+    isSelectorVisible, 
+    handleBackgroundColor
+  } = useContext(ChatContext) 
 
   const handleJoinRoom = () => {
     setSelectorVisible(false);
     setSelectorClosed(true)
     handleBackgroundColor()
     joinRoom();
- ;
   };
 
   const handleToggleSelector = () => {
@@ -23,15 +32,23 @@ function RoomSelector() {
     <>
       {isSelectorVisible && !isSelectorClosed && (
         <div className="RoomSelector">
-          
-            <div>Hello, again!<br></br>Is there anything specific, you feel like talking about today?</div>
+            <div>
+              Hello, again!
+              <br />
+              Is there anything specific, you feel like talking about today?
+            </div>
             <div className="SelectorInputAndButton">
-
-              <input className="SelectorInput" type="text" placeholder="e.g. Japanese Food, Barbie, ..." onChange={(event)=>{
+              <input 
+              className="SelectorInput" 
+              type="text" 
+              placeholder="e.g. Japanese Food, Barbie, ..." 
+              onChange={(event)=>{
                 setRoom(event.target.value);
               }}>
               </input>
-              <button className="JoinButton" onClick={handleJoinRoom} >Join</button>
+              <button className="JoinButton" onClick={handleJoinRoom} >
+                Join
+              </button>
             </div>
             <div>Otherwise, feel free to inspire yourself among friends.</div>
         </div>

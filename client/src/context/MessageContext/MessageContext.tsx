@@ -1,61 +1,67 @@
 import { createContext, useEffect, useState } from "react";
-import { ChatContext } from "./ChatContext";
+import { ChatContext } from "../ChatContext/ChatContext";
 import { useContext } from "react";
+import { Message, MessageContextValues } from "./MessageContextTypes";
+import { ChatList } from "../ChatContext/ChatContextTypes";
+import { ChatRoom } from "@/components/RoomList";
 
-const MessageContext = createContext();
+const MessageContext = createContext<MessageContextValues>({} as MessageContextValues);
 
-function MessageProvider ({ children }) {
-
-  const {socket, setRoom, roomLists, setRoomLists} = useContext(ChatContext)
+function MessageProvider ({ children }: { children: React.ReactNode }): JSX.Element {
+  const { socket, setRoom, roomLists, setRoomLists } = useContext(ChatContext);
 
   // DEFINITIONS
 
   const [message, setMessage] = useState("");
-  const [messageList, setMessageList] = useState([])
-
+  const [messageList, setMessageList] = useState<Message[]>([]);
 
   // MESSAGE FUNCTIONALITY
 
-  function handleRoomButtonClick(roomName) {
-
+  function handleRoomButtonClick(roomName: string) {
     const existingRoom = roomLists.some((list) =>
-        list.rooms.some((r) => r.name === roomName)
-      );
-      if (existingRoom) {
-        console.log("You are already in this room.");
-        return;
+      list.rooms.some((r) => r.name === roomName)
+    );
+    if (existingRoom) {
+      console.log("You are already in this room.");
+      return;
     }
-
+  
     setRoom(roomName);
     const roomData = {
       name: roomName,
       time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
       creator: socket.id,
     };
+
+    
     console.log("Room Data from RoomList:", roomData);
     socket.emit("join_room", roomData);
-  
-    setRoomLists((prevRoomLists) => {
-      const index = prevRoomLists.findIndex((list) => list.socketId === socket.id);
+
+    let updatedRoomLists = [...roomLists]; // clone the current state
+    const index = updatedRoomLists.findIndex((list) => list.socketId === socket.id);
+    
+    if (index !== -1) { // Ensure the item was found
       const updatedRooms = [
-        ...prevRoomLists[index].rooms,
+        ...updatedRoomLists[index].rooms,
         { name: roomName, time: roomData.time },
       ];
       const updatedList = {
         socketId: socket.id,
         rooms: updatedRooms,
       };
-      const updatedRoomLists = [...prevRoomLists];
+      
       updatedRoomLists[index] = updatedList;
-  
+    
       console.log("Updated Rooms RoomList:", updatedRooms);
+    }
   
-      return updatedRoomLists;
-    });
+    // Update roomLists directly with the new value
+    setRoomLists(updatedRoomLists)
+
   }
+  
 
-
-  const sendMessage = async (room) => {
+  const sendMessage = async (room: string) => {
     if (room !== "") {
       const messageData = {
         user: socket.id,
@@ -63,12 +69,12 @@ function MessageProvider ({ children }) {
         message: message,
         time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
         sender: "me",
-        socketId: socket.id
-      }
+        socketId: socket.id,
+      };
       if (message !== "") {
         await socket.emit("send_message", messageData);
-        console.log('message sent:', messageData)
-        setMessageList((list) => [...list, messageData])
+        console.log('message sent:', messageData);
+        setMessageList((list) => [...list, messageData]);
         setMessage("");
       }
     }
@@ -79,13 +85,13 @@ function MessageProvider ({ children }) {
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
-      console.log('message received', data)
+      console.log('message received', data);
       const messageData = {
         ...data,
-        sender: data.user === socket.id ? "me" : "other"
-      }
+        sender: data.user === socket.id ? "me" : "other",
+      };
       setMessageList((list) => [...list, messageData]);
-      console.log('messageList', messageList)
+      console.log('messageList', messageList);
     });
 
     socket.on('joined_empty_room', (data) => {
@@ -97,7 +103,7 @@ function MessageProvider ({ children }) {
         time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
         sender: "me",
         socketId: socket.id,
-      }
+      };
       setMessageList((list) => [...list, messageData]);
     });
 
@@ -106,8 +112,7 @@ function MessageProvider ({ children }) {
       socket.off("joined_empty_room");
     };
    
-  }, []);
-
+  }, [socket]);
 
   // TEST LOGS
 
@@ -115,20 +120,20 @@ function MessageProvider ({ children }) {
   //   console.log('messageList:', messageList);
   // }, [messageList]);
   
-  const value = {
+  const value: MessageContextValues = {
     message,
     setMessage,
     messageList,
     setMessageList,
     sendMessage,
     handleRoomButtonClick
-  }
+  };
 
   return (
-    < MessageContext.Provider value={value} >
+    <MessageContext.Provider value={value}>
       {children}
-    </ MessageContext.Provider>
-  )
+    </MessageContext.Provider>
+  );
 }
 
-export { MessageContext, MessageProvider }
+export { MessageContext, MessageProvider };
