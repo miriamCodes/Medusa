@@ -8,15 +8,24 @@ module.exports = {
     sourceType: "module",
     project: "./tsconfig.json",
   },
-  extends: ["airbnb"],
+  env: {
+    browser: true,
+    es2021: true,
+    jest: true,
+  },
+  extends: ["plugin:react/recommended", "standard"],
   plugins: ["react", "react-hooks", "@typescript-eslint"],
   rules: {
-    "no-console": "off",
-    quotes: "off",
-    "react/jsx-filename-extension": [
-      1,
-      { extensions: [".js", ".jsx", ".ts", ".tsx"] },
-    ],
+    // 'no-console': 'off',
+    // quotes: 'off',
+    semi: ["error", "always"],
+    // '@typescript-eslint/explicit-function-return-type': ['error'],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error"],
+    // 'react/jsx-filename-extension': [
+    //   1,
+    //   { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
+    // ],
   },
   settings: {
     settings: {
