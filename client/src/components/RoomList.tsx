@@ -1,29 +1,26 @@
 import './RoomList.css';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { ChatRoom } from '@/context/ChatContext/ChatContextTypes';
 import { ChatContext } from '../context/ChatContext/ChatContext';
 import { MessageContext } from '../context/MessageContext/MessageContext';
 
-function RoomList(): JSX.Element {
+function RoomList(): React.JSX.Element {
   const {
     chatrooms,
     setSelectorClosed,
     setSelectorVisible,
-    colors,
-    setBgColor,
-    bgColor,
     handleBackgroundColor,
   } = useContext(ChatContext);
   const { handleRoomButtonClick } = useContext(MessageContext);
 
-  const handleButtonClick = (roomName: string) => {
+  const handleButtonClick = (roomName: string): void => {
     handleRoomButtonClick(roomName);
     toggleSelector();
     handleBackgroundColor();
     console.log('I was executed handleBf');
   };
 
-  const toggleSelector = () => {
+  const toggleSelector = (): void => {
     setSelectorVisible(false);
     setSelectorClosed(true);
   };
@@ -37,7 +34,7 @@ function RoomList(): JSX.Element {
             <button
               className="RoomButton"
               key={chatroom._id}
-              onClick={() => handleButtonClick(roomName)}
+              onClick={():void => handleButtonClick(roomName)}
             >
               {chatroom.name}
             </button>

@@ -12,7 +12,6 @@ function ChatProvider({
 }: {
   children: React.ReactNode;
 }): React.JSX.Element {
-  // DEFINTIONS
 
   // ROOOMS
   const [room, setRoom] = useState("");
@@ -29,10 +28,9 @@ function ChatProvider({
   ];
   const [bgColor, setBgColor] = useState(colors[0]);
 
-  function handleBackgroundColor() {
+  function handleBackgroundColor(): void {
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
     setBgColor(randomColor);
-    console.log("I was executed");
   }
 
   const roomData = {
@@ -50,10 +48,8 @@ function ChatProvider({
   // POSITIONS
   const [positions, setPositions] = useState<Position[]>([]);
 
-  // LOGIC
   // ROUTES
-
-  function getAll() {
+  function getAll(): void {
     fetch("http://localhost:3001/chatrooms")
       .then((res) => res.json())
       .then((data) => setChatrooms(data))
@@ -61,8 +57,7 @@ function ChatProvider({
   }
 
   // FUNCTIONS
-
-  const joinRoom = () => {
+  const joinRoom = (): void => {
     if (room !== "") {
       const userAlreadyInRoom = roomLists.some((list) =>
         list.rooms.some((r) => r.name === room)
@@ -115,7 +110,7 @@ function ChatProvider({
     }
   };
 
-  const leaveRoom = (room: string) => {
+  const leaveRoom = (room: string): void => {
     socket.emit("leave_room", room);
     setRoomLists((prevRoomLists) => {
       const index = prevRoomLists.findIndex(

@@ -1,7 +1,6 @@
 import './RoomSelector.css';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { ChatContext } from '../context/ChatContext/ChatContext';
-import ChatList from './ChatList';
 
 function RoomSelector(): React.JSX.Element {
   const {
@@ -14,14 +13,14 @@ function RoomSelector(): React.JSX.Element {
     handleBackgroundColor,
   } = useContext(ChatContext);
 
-  const handleJoinRoom = () => {
+  const handleJoinRoom = (): void => {
     setSelectorVisible(false);
     setSelectorClosed(true);
     handleBackgroundColor();
     joinRoom();
   };
 
-  const handleToggleSelector = () => {
+  const handleToggleSelector = (): void => {
     setSelectorVisible(!isSelectorVisible);
     setSelectorClosed(false);
   };
@@ -40,7 +39,7 @@ function RoomSelector(): React.JSX.Element {
               className="SelectorInput"
               type="text"
               placeholder="e.g. Japanese Food, Barbie, ..."
-              onChange={(event) => {
+              onChange={(event): void => {
                 setRoom(event.target.value);
               }}
             />

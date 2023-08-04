@@ -1,13 +1,12 @@
-import {
+import React, {
   createContext, useEffect, useState, useContext,
 } from 'react';
 import { ChatContext } from '../ChatContext/ChatContext';
 import { Message, MessageContextValues } from './MessageContextTypes';
-import { ChatList } from '../ChatContext/ChatContextTypes';
 
 const MessageContext = createContext<MessageContextValues>({} as MessageContextValues);
 
-function MessageProvider({ children }: { children: React.ReactNode }): JSX.Element {
+function MessageProvider({ children }: { children: React.ReactNode }): React.JSX.Element {
   const {
     socket, setRoom, roomLists, setRoomLists,
   } = useContext(ChatContext);
@@ -19,7 +18,7 @@ function MessageProvider({ children }: { children: React.ReactNode }): JSX.Eleme
 
   // MESSAGE FUNCTIONALITY
 
-  function handleRoomButtonClick(roomName: string) {
+  function handleRoomButtonClick(roomName: string): void {
     const existingRoom = roomLists.some((list) => list.rooms.some((r) => r.name === roomName));
     if (existingRoom) {
       console.log('You are already in this room.');
@@ -58,7 +57,7 @@ function MessageProvider({ children }: { children: React.ReactNode }): JSX.Eleme
     setRoomLists(updatedRoomLists);
   }
 
-  const sendMessage = async (room: string) => {
+  const sendMessage = async (room: string): Promise<void> => {
     if (room !== '') {
       const messageData = {
         user: socket.id,

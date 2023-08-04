@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import Chat from "./Messaging";
 import { ChatContext } from "../context/ChatContext/ChatContext";
 
-function ChatList(): JSX.Element {
+function ChatList (): React.JSX.Element {
   const { roomLists, socket } = useContext(ChatContext);
 
   const index = roomLists.findIndex((list) => list.socketId === socket.id);
