@@ -2,13 +2,10 @@ import './RoomList.css';
 import { useContext } from "react";
 import { ChatContext } from "../context/ChatContext/ChatContext";
 import { MessageContext } from "../context/MessageContext/MessageContext";
+import { ChatRoom } from '@/context/ChatContext/ChatContextTypes';
 
 
-export type ChatRoom = {
-  _id?: string;
-  name: string;
-  time: string;
-}
+
 
 function RoomList(): JSX.Element {
   const { 

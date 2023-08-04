@@ -5,10 +5,7 @@ import { ChatContext } from "../context/ChatContext/ChatContext";
 import { MouseEvent } from "react";
 import React from 'react';
 
-type Position = {
-  top: string;
-  left: string;
-}
+
 
 function Chat({room, socket}: {room:string; socket: any}): JSX.Element {
 

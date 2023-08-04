@@ -1,7 +1,8 @@
 import io from "socket.io-client";
 import { createContext, useEffect, useState } from "react";
-import { ChatContextValues
+import { ChatContextValues, ChatList, ChatRoom
  } from "./ChatContextTypes";
+import { Position } from "../MessageContext/MessageContextTypes";
 const ChatContext = createContext<ChatContextValues>({} as ChatContextValues);
 const socket = io("http://localhost:3001");
 
@@ -12,9 +13,9 @@ function ChatProvider ({ children }: {children: React.ReactNode}): JSX.Element {
 
   // ROOOMS
   const [room, setRoom] = useState("");
-  const [chatrooms, setChatrooms] = useState([]);
+  const [chatrooms, setChatrooms] = useState<ChatRoom[]>([]);
   const [userCount, setUserCount] = useState(0);
-  const [roomLists, setRoomLists] = useState([]);
+  const [roomLists, setRoomLists] = useState<ChatList[]>([]);
 
   const colors = ['rgb(210, 185, 31)', 'rgb(37,73,155)', 'rgb(130,125,188', 'rgb(244,90,51)', 'rgb(217,117,117)'];
   const [bgColor, setBgColor] = useState(colors[0]);
@@ -36,7 +37,7 @@ function ChatProvider ({ children }: {children: React.ReactNode}): JSX.Element {
   const [isSelectorClosed, setSelectorClosed] = useState(false);
   
   // POSITIONS
-  const [positions, setPositions] = useState([]);
+  const [positions, setPositions] = useState<Position[]>([]);
 
 
   // LOGIC
@@ -102,7 +103,7 @@ function ChatProvider ({ children }: {children: React.ReactNode}): JSX.Element {
     }
   };
   
-  const leaveRoom = (room) => {
+  const leaveRoom = (room: string) => {
     socket.emit("leave_room", room);
     setRoomLists((prevRoomLists) => {
       const index = prevRoomLists.findIndex(
@@ -206,11 +207,14 @@ function ChatProvider ({ children }: {children: React.ReactNode}): JSX.Element {
   // POSITIONS
 
   useEffect(() => {
-    const newPositions = [];
+    const newPositions: Position[] = [];
     for (let i = 0; i < 10; i++) {
-      const top = Math.floor(Math.random() * window.innerHeight);
-      const left = Math.floor(Math.random() * window.innerWidth);
-      newPositions.push({ top, left });
+
+      const position: Position = {
+        top: Math.floor(Math.random() * window.innerHeight),
+        left: Math.floor(Math.random() * window.innerWidth)
+      }
+      newPositions.push(position);
     }
     setPositions(newPositions);
   }, []);

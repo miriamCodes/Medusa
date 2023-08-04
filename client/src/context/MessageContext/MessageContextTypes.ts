@@ -1,5 +1,10 @@
 import { Socket } from "socket.io-client";
 
+export type Position = {
+  top: number;
+  left: number;
+}
+
 export interface Message {
   // Define properties for a message (if needed???)
   room: string;
