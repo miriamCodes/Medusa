@@ -4,6 +4,8 @@ import { useContext } from "react";
 import { Message, MessageContextValues } from "./MessageContextTypes";
 import { ChatList } from "../ChatContext/ChatContextTypes";
 import { ChatRoom } from "@/components/RoomList";
+import io from 'socket.io-client';
+
 
 const MessageContext = createContext<MessageContextValues>({} as MessageContextValues);
 
@@ -18,6 +20,7 @@ function MessageProvider ({ children }: { children: React.ReactNode }): JSX.Elem
   // MESSAGE FUNCTIONALITY
 
   function handleRoomButtonClick(roomName: string) {
+    
     const existingRoom = roomLists.some((list) =>
       list.rooms.some((r) => r.name === roomName)
     );
