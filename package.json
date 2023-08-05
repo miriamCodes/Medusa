@@ -1,0 +1,16 @@
+{
+  "name": "medusa",
+  "version": "1.0.0",
+  "description": "Hello you,",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.3"
+  }
+}
