@@ -1,9 +1,13 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# --- SERVER-SIDE automagic commands run when commiting
 cd ./server
 npm run lint-fix
+# npm test
 
+# --- CLIENT-SIDE automagic commands run when commiting
 cd ../client
 npm run lint-fix
+# npm test
 
