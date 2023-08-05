@@ -1,11 +1,16 @@
 // import { createContext, useEffect, useState, ReactNode } from "react";
-import { createContext } from "react";
-import io, { Socket } from "socket.io-client";
-import { ChatRoom } from "../../components/RoomList";
+import { createContext } from 'react';
+import io, { Socket } from 'socket.io-client';
 
-const ChatContext = createContext<ChatContextValues>({} as ChatContextValues);
 
-const socket = io("http://localhost:3001");
+
+const socket = io('http://localhost:3001');
+
+export type ChatRoom = {
+  _id?: string;
+  name: string;
+  time: string;
+}
 
 export interface ChatContextValues {
   room: string;
@@ -39,6 +44,5 @@ export interface ChatList {
   socketId: string;
   rooms: ChatRoom[];
 }
-
-
+const ChatContext = createContext<ChatContextValues>({} as ChatContextValues);
 export { ChatContext, socket };

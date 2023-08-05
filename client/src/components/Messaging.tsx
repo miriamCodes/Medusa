@@ -1,87 +1,99 @@
 import './Messaging.css';
-import { useContext, useEffect, useState, useRef } from "react";
-import { MessageContext } from "../context/MessageContext/MessageContext";
-import { ChatContext } from "../context/ChatContext/ChatContext";
-import { MouseEvent } from "react";
-import React from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+  MouseEvent,
+} from 'react';
+import { MessageContext } from '../context/MessageContext/MessageContext';
+import { ChatContext } from '../context/ChatContext/ChatContext';
 
-type Position = {
-  top: string;
-  left: string;
-}
+function Chat({
+  room,
+  socket,
+}: {
+  room: string;
+  socket: any;
+}): React.JSX.Element {
+  const { setMessage, messageList, sendMessage } = useContext(MessageContext);
+  const { leaveRoom, handleBackgroundColor } = useContext(ChatContext);
 
-function Chat({room, socket}: {room:string; socket: any}): JSX.Element {
+  // MESSAGE FUNCTIONALITY
 
-  const {setMessage, messageList, sendMessage, message} = useContext(MessageContext);
-  const {leaveRoom, handleBackgroundColor} = useContext(ChatContext);
-
-  // MESSAGE FUNCTIONALITY 
-
-  const handleSendMessage = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSendMessage = (e: React.MouseEvent<HTMLButtonElement>): void => {
     sendMessage(room);
     const targetNode = e.target as Node;
     if (targetNode.parentNode) {
-      const input = (targetNode.parentNode as HTMLElement).querySelector('input');
+      const input = (targetNode.parentNode as HTMLElement).querySelector(
+        'input'
+      );
       if (input) {
         input.value = '';
       }
     }
   };
-  
-  const handleLeaveRoom = () => {
-    handleBackgroundColor()
+
+  const handleLeaveRoom = (): void => {
+    handleBackgroundColor();
     leaveRoom(room);
   };
 
-  // COLORS 
-
+  // COLORS
+  const colorMapRef = useRef<Record<string, string>>({});
   const [colorMap, setColorMap] = useState({});
-  const [color, setColor] = useState("#" + ((Math.random() * 0xffffff) << 0).toString(16)); // Define the color variable
+  const [color] = useState(
+    `#${((Math.random() * 0xffffff) << 0).toString(16)}`
+  );
+  // if the color is supposed to be changed at a later state, include 'setColor' as a second state
 
   useEffect(() => {
-    setColorMap((prevColorMap) => {
-      return {
-        ...prevColorMap,
-        [socket.id]: color,
-      };
-    });
+    const newColorMap = {
+      ...colorMap,
+      [socket.id]: color,
+    };
+    colorMapRef.current = newColorMap;
+    setColorMap(newColorMap);
   }, [socket.id, color]);
 
-  function getColor(sender) {
-    if (!colorMap[sender]) {
+  function getColor(sender: string): string {
+    if (!colorMapRef.current[sender]) {
       // Generate a random color for new users
-      setColorMap((prevColorMap) => {
-        return {
-          ...prevColorMap,
-          [sender]: getRandomColor(),
-        };
-      });
+      const newColor = getRandomColor();
+      const newColorMap = {
+        ...colorMapRef.current,
+        [sender]: newColor,
+      };
+      colorMapRef.current = newColorMap;
+      setColorMap(newColorMap);
     }
-    return colorMap[sender];
+    return colorMapRef.current[sender];
   }
 
-  function getRandomColor() {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
+  function getRandomColor(): string {
+    const letters: string = '0123456789ABCDEF';
+    let color: string = '#';
     for (let i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
   }
 
-   // POSITIONING 
+  // POSITIONING
 
-  function calculateLeft() {
-    const value = `${Math.floor(Math.random() * (window.innerWidth - 300))}px`;
-    console.log('VALEU', value)
+  function calculateLeft(): string {
+    const value: string = `${Math.floor(
+      Math.random() * (window.innerWidth - 300)
+    )}px`;
+    console.log('VALEU', value);
     return value;
   }
 
-  function calculateTop() {
+  function calculateTop(): string {
     return `${Math.floor(Math.random() * (window.innerHeight - 300))}px`;
   }
 
-  const [position, setPosition] = useState({ top: "-1000px", left: "-1000px" });
+  const [position, setPosition] = useState({ top: '-1000px', left: '-1000px' });
 
   useEffect(() => {
     setPosition({ top: calculateTop(), left: calculateLeft() });
@@ -92,7 +104,7 @@ function Chat({room, socket}: {room:string; socket: any}): JSX.Element {
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
-  function handleMouseDown(event: MouseEvent) {
+  function handleMouseDown(event: MouseEvent): void {
     setIsDragging(true);
     setDragOffset({
       x: event.clientX - parseInt(position.left),
@@ -100,98 +112,92 @@ function Chat({room, socket}: {room:string; socket: any}): JSX.Element {
     });
   }
 
-  function handleMouseMove(event: MouseEvent) {
+  function handleMouseMove(event: MouseEvent): void {
     if (isDragging) {
       setPosition({
-        left: event.clientX - dragOffset.x + "px",
-        top: event.clientY - dragOffset.y + "px",
+        left: `${event.clientX - dragOffset.x}px`,
+        top: `${event.clientY - dragOffset.y}px`,
       });
     }
   }
 
-  function handleMouseUp() {
+  function handleMouseUp(): void {
     setIsDragging(false);
   }
-  const messagesEndRef = useRef(null)
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({behavior: 'smooth'})
-  }
+  const scrollToBottom = (): void => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
-  useEffect(()=>{
-    scrollToBottom()
-  }, [messageList])
-
+  useEffect(() => {
+    scrollToBottom();
+  }, [messageList]);
 
   return (
-    <>
-      <div className="MessageContainer" 
-      style={{ position: "absolute", ...position }} 
+    <div
+      className="MessageContainer"
+      style={{ position: 'absolute', ...position }}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}>
-        <div className="ChatBar">
-          <div className="Room">{room}</div>
-            <button 
-            className="LeaveButton" 
-            onClick={handleLeaveRoom}>
-            <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            width="16" 
-            height="16" 
-            fill="currentColor" 
-            className="bi bi-x-lg" 
+      onMouseUp={handleMouseUp}
+    >
+      <div className="ChatBar">
+        <div className="Room">{room}</div>
+        <button className="LeaveButton" onClick={handleLeaveRoom}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            className="bi bi-x-lg"
             viewBox="0 0 16 16"
-            >
-            <path 
-            d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
+          >
+            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+          </svg>
+        </button>
+      </div>
+
+      <div className="ChatWindow">
+        <div className="MessageWrapper">
+          {messageList
+            .filter((messageContent) => messageContent.room === room)
+            .map((messageContent) => (
+              <div
+                key="messageContent.sender"
+                className={`Message ${messageContent.sender}`}
+              >
+                <div
+                  className="User_Time"
+                  style={{ color: getColor(messageContent.socketId) }}
+                >
+                  {messageContent.sender === 'me'
+                    ? 'You'
+                    : `User ${messageContent.socketId.substring(0, 5)}`}
+                  ,{messageContent.time}
+                </div>
+                <div className="MessageContent">{messageContent.message}</div>
+                <div ref={messagesEndRef} />
+              </div>
+            ))}
+        </div>
+
+        <div className="ChatInputWrapper">
+          <div className="ChatInput">
+            <input
+              className="MessageInput"
+              type="text"
+              onChange={(event): void => {
+                setMessage(event.target.value);
+              }}
             />
-            </svg>
+            <button className="SendButton" onClick={handleSendMessage}>
+              Send
             </button>
           </div>
-
-          <div className="ChatWindow" >
-            <div className="MessageWrapper">
-            {messageList
-              .filter((messageContent) => messageContent.room === room)
-              .map((messageContent) => (
-              <div className={`Message ${messageContent.sender}`}>
-                <div 
-                className="User_Time" 
-                style={{ color: getColor(messageContent.socketId) }}>   
-                {messageContent.sender === "me" ? "You" : `User ${messageContent.socketId.substring(0, 5)}`}, 
-                {messageContent.time}
-                </div>
-                <div className="MessageContent">
-                  {messageContent.message}
-                </div>
-                <div ref={messagesEndRef}>
-                </div>
-              </div>
-              ))}
-            </div>
-
-            <div className="ChatInputWrapper">
-              <div className="ChatInput">
-                <input className="MessageInput" 
-                  type="text"
-                  onChange={(event) => {
-                    setMessage(event.target.value);
-                  }}>
-                </input>
-                <button 
-                className="SendButton" 
-                onClick={handleSendMessage}
-                >Send
-                </button>
-              </div>
-            </div>
-               
-          
-          </div>
-
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 
