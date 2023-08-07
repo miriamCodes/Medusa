@@ -11,7 +11,14 @@ export type ChatRoom = {
   name: string;
   time: string;
 }
-
+export interface RoomList {
+  socketId: string;
+  rooms: ChatRoom[];
+}
+export interface ChatList {
+  socketId: string;
+  rooms: ChatRoom[];
+}
 export interface ChatContextValues {
   room: string;
   setRoom: (room: string) => void;
@@ -36,13 +43,6 @@ export interface ChatContextValues {
   handleBackgroundColor: () => void;
 }
 
-export interface RoomList {
-  socketId: string;
-  rooms: ChatRoom[];
-}
-export interface ChatList {
-  socketId: string;
-  rooms: ChatRoom[];
-}
+
 const ChatContext = createContext<ChatContextValues>({} as ChatContextValues);
 export { ChatContext, socket };

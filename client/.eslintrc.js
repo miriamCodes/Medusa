@@ -17,23 +17,10 @@ module.exports = {
   plugins: ['react', 'react-hooks', '@typescript-eslint'],
   rules: {
     'no-console': 'off',
-    // quotes: 'off',
     semi: ['error', 'always'],
     '@typescript-eslint/explicit-function-return-type': ['error'],
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['error'],
-    // 'react/jsx-filename-extension': [
-    //   1,
-    //   { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
-    // ],
-    // 'import/extensions': [
-    //   'error',
-    //   'ignorePackages',
-    //   {
-    //     ts: 'never',
-    //     tsx: 'never',
-    //   },
-    // ],
   },
   settings: {
     settings: {
