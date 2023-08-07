@@ -28,7 +28,20 @@ const mockChatContext: ChatContextValues = {
     setChatrooms: jest.fn(),
     userCount: 0,
     setUserCount: jest.fn(),
-   
+    joinRoom: jest.fn(),
+    leaveRoom: jest.fn(),
+    roomLists: [],
+    setRoomLists: jest.fn(),
+    positions: [],
+    setPositions: jest.fn(),
+    setSelectorClosed: jest.fn(),
+    setSelectorVisible: jest.fn(),
+    isSelectorClosed: false,
+    isSelectorVisible: false,
+    colors: [],
+    bgColor: "",
+    setBgColor: jest.fn(),
+    handleBackgroundColor: jest.fn(),
 };
 
 describe('MessageProvider', () => {
