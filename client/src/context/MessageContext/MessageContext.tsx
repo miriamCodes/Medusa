@@ -19,7 +19,9 @@ function MessageProvider({ children }: { children: React.ReactNode }): React.JSX
   // MESSAGE FUNCTIONALITY
 
   function handleRoomButtonClick(roomName: string): void {
-    const existingRoom = roomLists.some((list) => list.rooms.some((r) => r.name === roomName));
+    const existingRoom = roomLists.some((list) =>
+      list.rooms.some((r) => r.name === roomName)
+    );
     if (existingRoom) {
       console.log('You are already in this room.');
       return;
