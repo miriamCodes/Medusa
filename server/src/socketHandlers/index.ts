@@ -4,7 +4,7 @@ import { Chatroom } from "../models/chatroom";
 
 const socketHandlers = (io: Server) => {
     io.on("connection", (socket: Socket) => {
-        console.log(`User Connected: ${socket.id}`);
+      console.log(`User Connected: ${socket.id}`);
 
         socket.on("send_message", (data) => {
             console.log('message from frontend', data)
@@ -102,7 +102,9 @@ const socketHandlers = (io: Server) => {
         });
 
     });
-
+    return () => {
+        io.close();
+      };
 }
 
 export default socketHandlers;
