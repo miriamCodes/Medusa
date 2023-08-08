@@ -6,12 +6,18 @@ import db from "./db/db";
 import middlewares from "./middlewares";
 import routes from "./routes";
 import socketHandler from "./socketHandlers";
+import { authenticateToken } from "./auth/middleware"
+
 
 db();
 const app: Express = express();
 app.use(cors());
 app.use(middlewares);
+app.use(authenticateToken)
+
 app.use(routes);
+
+
 
 const server = http.createServer(app);
 const io = new Server(server, {
