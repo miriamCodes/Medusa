@@ -1,0 +1,16 @@
+.RoomList {
+  display: flex;
+  flex-direction: column;
+}
+
+.RoomButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 52px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: -8px 40px;
+  color: inherit;
+}
