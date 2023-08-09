@@ -12,5 +12,8 @@
   "devDependencies": {
     "husky": "^8.0.0",
     "lint-staged": "^13.2.3"
+  },
+  "dependencies": {
+    "firebase-admin": "^11.10.1"
   }
 }

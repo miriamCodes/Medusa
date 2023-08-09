@@ -32,17 +32,3 @@ socketHandler(io);
 server.listen(3001, () => {
   console.log("SERVER IS RUNNING");
 });
-
-
-// const fillDb = async (roomName) => {
-//   const chatroom = new Chatroom({name: roomName});
-//   await chatroom.save();
-// }
-// fillDb('Persian Philosophy');
-// fillDb('Berlin Dating');
-// fillDb('We need to talk about Barbie');
-
-
-
-    // const chatrooms = await Chatroom.find({});
-    // io.to(socket.id).emit("chatrooms_list", chatrooms);

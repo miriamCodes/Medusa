@@ -171,8 +171,7 @@ function ChatProvider({
       });
       setChatrooms(updatedChatrooms);
       console.log(
-        `User ${userData.username} joined the chatroom ${
-          userData.room
+        `User ${userData.username} joined the chatroom ${userData.room
         }. Users: ${userData.userCount}. Usernames: ${userData.usernames.join(
           ", "
         )}`
@@ -200,8 +199,7 @@ function ChatProvider({
       });
       setChatrooms(updatedChatrooms);
       console.log(
-        `User ${userData.username} left the chatroom ${userData.room}. Users: ${
-          userData.userCount
+        `User ${userData.username} left the chatroom ${userData.room}. Users: ${userData.userCount
         }. Usernames: ${userData.usernames.join(", ")}`
       );
     });
