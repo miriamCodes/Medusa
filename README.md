@@ -12,6 +12,9 @@ Table of Contents:
 -Feature: Accessibility
 -Feature: Authentication
 
+## get started!
+make sure to install all necessary dependencies as can be seen in the package.json and be aware that for security reasons the keys are removed from thee code, which is why the code requires personal setting changes for functionality.
+
 ## FOLDER STRUCTURE:
 First, the following is how we would describe the setup including our changes in the folder structure:
 
