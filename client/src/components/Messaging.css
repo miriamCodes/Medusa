@@ -34,7 +34,7 @@
 .LeaveButton {
   background: none;
   appearance: none;
-  background: nonw;
+  background: none;
   padding: 5px;
   width: 26px;
   height: 26px;
@@ -76,7 +76,7 @@
   padding: 10px;
   display: flex;
   flex-direction: column;
-  font-size: 16;
+  font-size: 16px;
 }
 
 .MessageContent {
