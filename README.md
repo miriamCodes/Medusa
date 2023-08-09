@@ -36,7 +36,8 @@ First, the following is how we would describe the setup including our changes in
 - `middlewares/index.ts`: Contains an array of middleware functions used in the application.
 - `models/chatroom.ts`: Defines the schema for chatrooms within the application, specifying the properties and their types.
 - `routes/index.ts`: Main entry point for defining and combining different route modules
-- `routes/chatroom.ts`: Handles the creation and retrieval of chatrooms.
+- `routes/chatroom.ts`: Specifies the routing related to chatroom management.
+- `chatroomController.ts`: Handles the creation and retrieval of chatrooms.
 - `socketHandlers/index.ts`: Manages real-time communication in the chat application.
 
 ---TYPESCRIPT:
