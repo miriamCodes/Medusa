@@ -144,7 +144,11 @@ function Chat({
     >
       <div className="ChatBar">
         <div className="Room">{room}</div>
-        <button className="LeaveButton" onClick={handleLeaveRoom}>
+        <button
+          className="LeaveButton"
+          aria-label="leave chatroom button"
+          onClick={handleLeaveRoom}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -186,12 +190,17 @@ function Chat({
           <div className="ChatInput">
             <input
               className="MessageInput"
+              aria-label="form element to write message"
               type="text"
               onChange={(event): void => {
                 setMessage(event.target.value);
               }}
             />
-            <button className="SendButton" onClick={handleSendMessage}>
+            <button
+              className="SendButton"
+              aria-label="send button to send message"
+              onClick={handleSendMessage}
+            >
               Send
             </button>
           </div>
