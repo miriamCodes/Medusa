@@ -1,13 +1,14 @@
+import React from 'react';
 import { render, act } from '@testing-library/react';
 import { ChatProvider, ChatContext } from './ChatContext';
 
 describe('ChatContext', () => {
-    it('should set the correct initial state', () => {
+    it('should set the correct initial state', (): void => {
         let contextValues: any;
         render(
             <ChatProvider>
                 <ChatContext.Consumer>
-                    {(context) => {
+                    {(context): null => {
                         contextValues = context;
                         return null;
                     }}
@@ -19,12 +20,12 @@ describe('ChatContext', () => {
         expect(contextValues.chatrooms).toEqual([]);
     });
 
-    it('should update the rooom when setRoom is called', () => {
+    it('should update the rooom when setRoom is called', (): void => {
         let contextValues: any;
         render(
             <ChatProvider>
                 <ChatContext.Consumer>
-                    {(context) => {
+                    {(context): null => {
                         contextValues = context;
                         return null;
                     }}
