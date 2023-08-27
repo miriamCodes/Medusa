@@ -29,7 +29,10 @@ Table of Contents:
 
 ### Prerequisittes
 
-Before running this project, ensure you have installed the following software on your machine: nodejs, mongodb.
+Before running this project, ensure you have installed the following software on your machine: 
+
+- [nodejs](https://nodejs.org/en)
+- [MongoDB](https://www.mongodb.com)
 
 ### Install
 
@@ -45,7 +48,7 @@ npm install
 npm run start
 ```
 
-Firebase Authentication Key Setup:
+[Firebase Authentication](https://firebase.google.com/docs/auth/) Key Setup:
 
 1. **Create a Firebase Account and Project:** Sign up for a Firebase account and initiate a new project.
 1. **Generate a Private Key:**
