@@ -1,11 +1,23 @@
+# Medusa
+
 ## Introduction
 
-This project is a part of the codewors bootcamp. Within 6 days we, Adam and Miriam, had to improve an existing codebase from one of our fellow students. We formulated a proposal on what we expect to be able to work on in the given timeframe and decided to focus on following best practices, adding tests and introducing a security feature.
+Medusa is a web app aimed at generating instant, spontaneous, and anonymous discussions.
 
-This document summarizes our alterations, including the conversion to TypeScript, reorganization of the folder structure, comprehensive test planning, and the addition of new features like Husky, Accessibility, and Authentication.
+This read.me offers a detailed description of our goal to improve the exciting codebase of the chat app Medusa. Hereby we focused on the aspects of security and following best practices.
+We forked from the repo of [Medusa](https://github.com/makekema/Medusa.git).
+
+### Summary
+
+Transitioned the entire application from Javascript to Typescript, enhancing type safety and modular design.
+Added accessibility improvements, ensuring the application achieved top scores in Chrome Lighthouse Accessibility Audit and addressed all concerns raised by Axe DevTools Scan.
+Improved the test infrastructure by 100%, providing coverage for the application's primary functionalities from scratch using Jest and E2E testing with Cypress.
+Integrated Husky to introduce Git hooks that enforce linting and testing standards before each commit, enhancing overall code quality.
+Strategically implemented anonymous user authentication using Google's Firebase, enhancing application security while maintaining user anonymity.
 
 Table of Contents:
 
+- Get Started
 - Folder Structure
 - TypeScript
 - Test Coverage
@@ -13,31 +25,43 @@ Table of Contents:
 - Feature: Accessibility
 - Feature: Authentication
 
-## Get started
+## Getting started
 
-### Pre-requisites
+### Prerequisittes
 
-1. Have a local version of mongodb running on your machine.
-1. Set up firebase project by:
+Before running this project, ensure you have installed the following software on your machine: nodejs, mongodb.
+
+### Install
+
+```sh
+cd ./server
+npm install
+npm run
+```
+
+```sh
+cd ./client
+npm install
+npm run start
+```
+
 Firebase Authentication Key Setup:
 
-    1. **Create a Firebase Account and Project:** Sign up for a Firebase account and initiate a new project.
-    1. **Generate a Private Key:**
-    In Project Settings, navigate to Service Accounts.
-    Generate a new private key, which produces a JSON file for your project.
-    1. **Transfer the JSON File:**
-    Move the JSON to your desired location.
-    Link it in the firebaseAdmin file on the server.
-    1. **Configure Frontend Keys:**
-    In the firebaseClient file, input the following keys from the General section of Project Settings:
+1. **Create a Firebase Account and Project:** Sign up for a Firebase account and initiate a new project.
+1. **Generate a Private Key:**
+In Project Settings, navigate to Service Accounts.
+Generate a new private key, which produces a JSON file for your project.
+1. **Transfer the JSON File:**
+Move the JSON to your desired location.
+Link it in the firebaseAdmin file on the server.
+1. **Configure Frontend Keys:**
+In the firebaseClient file, input the following keys from the General section of Project Settings:
     - apiKey: WebAPI Key
     - authDomain: "{project_id}.- firebaseapp.com"
     - projectID: Project ID
     - messagingSenderId: Project number
 
-Run `npm install` on all levels (top level, `/server`, `/client`) to get all the nesasary dependancies installed.
-
-## FOLDER STRUCTURE
+## Folder Structure
 
 First, the following is how we would describe the setup including our changes in the folder structure:
 
@@ -72,11 +96,11 @@ First, the following is how we would describe the setup including our changes in
 - `chatroomController.ts`: Handles the creation and retrieval of chatrooms.
 - `socketHandlers/index.ts`: Manages real-time communication in the chat application.
 
-## TYPESCRIPT
+## Typescript
 
 As part of our continuous effort to improve code quality, maintainability, and scalability, the entire codebase has been refactored from JavaScript to TypeScript.
 
-## TEST COVERAGE
+## Test Coverage
 
 In alignment with our commitment to maintaining the robustness and reliability of the application, we have strategically planned test coverage to cover essential use cases. Acknowledging our time constraints, we prioritized and successfully implemented various HTTP endpoint tests. Unfortunately, this meant delaying the completion of certain websocket tests.
 
@@ -95,11 +119,11 @@ In alignment with our commitment to maintaining the robustness and reliability o
 `client/src/context/ChatContext.test.tsx`: We validated the correct initial state for messages, and the ability to update individual messages, ensuring that the message handling within the application functions as expected.
 `client/src/context/MessageContext.test.tsx`: The tests confirm the proper initialization of chat room properties and the functionality of room updates, providing assurance that chat room management in the application operates correctly.
 
-## FEATURE: HUSKY
+## Feature: Husky
 
 Husky has been configured in the project to automatically run Git hooks, ensuring that specific tasks such as linting and testing are executed before committing changes, thereby enhancing the code quality and consistency within the repository.
 
-## FEATURE: ACCESSIBILITY
+## Feature: Accessibility
 
 We have prioritized accessibility in both the landing page and chat-view of the application, ensuring an inclusive user experience. The measures implemented and validations performed are as follows:
 
@@ -107,6 +131,11 @@ Axe DevTools Scan: A full-page scan using Axe DevTools was conducted, and the ap
 Chrome Lighthouse Accessibility Auditing: The application scored a perfect 100 in the Chrome Lighthouse Accessibility Audit, reflecting a high standard of accessibility.
 W3 Validator: While W3 Validator is not compatible with React TypeScript, the CSS was thoroughly checked and corrected to ensure alignment with web standards.
 
-## FEATURE: AUTHENTICATION
+## Feature: Authentification
 
 We have leveraged Google's Firebase to execute anonymous user authentication. This process automatically assigns a unique User UID to each newcomer, which is retained within the Firebase Cloud SDK. At the present stage, this UID identifies users on the application level and not within individual chatrooms. It's important to note that while the UID persists across sessions, it remains transient. Over time, it will be automatically removed. Additionally, should there be a change in a user's IP address, a fresh UID will be generated. This approach amplifies the application's security by confirming a user's presence, while simultaneously preserving the core anonymous experience originally intended for the application.
+
+## Authors
+
+- Github: [@adamlebreee](https://github.com/adamlebreee)
+- Github: [@miriamCodes](https://github.com/miriamCodes)
